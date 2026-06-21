@@ -12,47 +12,83 @@
         height: 100%;
         overflow: hidden;
         background: #000;
+        font-family: sans-serif;
       }
 
       iframe {
         border: 0;
         width: 100vw;
         height: 100vh;
+        display: none; /* Hide until triggered */
+      }
+
+      /* The trap overlay */
+      #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #111;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 9999;
       }
     </style>
   </head>
   <body>
+    <div id="overlay">Click to verify you are human...</div>
+    
     <div id="player" aria-label="cyberscury rickroll player"></div>
 
     <script>
-      function onYouTubeIframeAPIReady() {
-        const player = new YT.Player('player', {
-          videoId: 'dQw4w9WgXcQ',
-          playerVars: {
-            autoplay: 1,
-            controls: 0,
-            loop: 1,
-            playlist: 'dQw4w9WgXcQ',
-            rel: 0,
-            mute: 0,
-            fs: 1,
-          },
-          events: {
-            onReady(event) {
-              event.target.unMute();
-              event.target.setVolume(100);
-              event.target.playVideo();
-              event.target.requestFullscreen();
-            },
-          },
-        });
+      let player;
 
-        window.cyberscuryPlayer = player;
-      }
-
+      // 1. Load the YouTube API
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       document.body.appendChild(tag);
+
+      // 2. Initialize the player, but don't autoplay yet
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          videoId: 'dQw4w9WgXcQ',
+          playerVars: {
+            controls: 0,
+            loop: 1,
+            playlist: 'dQw4w9WgXcQ', // Required for looping a single video
+            rel: 0,
+            fs: 1,
+            disablekb: 1 // Disables keyboard controls
+          }
+        });
+      }
+
+      // 3. Spring the trap on click
+      document.getElementById('overlay').addEventListener('click', function() {
+        // Hide the overlay and show the iframe
+        this.style.display = 'none';
+        document.querySelector('iframe').style.display = 'block';
+
+        // Now that we have a user interaction, the browser allows sound and fullscreen!
+        player.unMute();
+        player.setVolume(100);
+        player.playVideo();
+        
+        // Request fullscreen on the iframe wrapper
+        const iframe = document.querySelector('iframe');
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) { /* Safari */
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) { /* IE11 */
+          iframe.msRequestFullscreen();
+        }
+      });
     </script>
   </body>
 </html>
