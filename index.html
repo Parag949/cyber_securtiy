@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cyberscury</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+      }
+
+      iframe {
+        border: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&rel=0&enablejsapi=1"
+      title="cyberscury rickroll"
+      allow="autoplay; encrypted-media; fullscreen"
+      allowfullscreen
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+
+    <script>
+      function onYouTubeIframeAPIReady() {
+        const player = new YT.Player(document.querySelector('iframe'), {
+          events: {
+            onReady(event) {
+              event.target.unMute();
+              event.target.setVolume(100);
+              event.target.playVideo();
+            },
+          },
+        });
+
+        window.cyberscuryPlayer = player;
+      }
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+  </body>
+</html>
