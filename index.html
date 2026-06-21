@@ -34,12 +34,15 @@
             loop: 1,
             playlist: 'dQw4w9WgXcQ',
             rel: 0,
-            mute: 1,
+            mute: 0,
+            fs: 1,
           },
           events: {
             onReady(event) {
-              event.target.mute();
+              event.target.unMute();
+              event.target.setVolume(100);
               event.target.playVideo();
+              event.target.requestFullscreen();
             },
           },
         });
